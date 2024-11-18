@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 "use client"
 
 import { useGetCalls } from '@/hooks/useGetCalls'
@@ -53,7 +51,7 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
             const recordings = callData
               .filter(call => call.recordings.length > 0)
               .flatMap(call => call.recordings)
-  
+        // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               setRecordings(recordings);
           }
           catch(error) {
@@ -63,7 +61,7 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
         }
 
         if(type === 'recordings') fetchRecordings()
-    },[type, callRecordings])
+    },[type, toast, callRecordings])
 
     const calls = getCalls();
     const noCallsMessage = getNoCallsMessage();
@@ -77,6 +75,7 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
           ?
           calls.map((meeting : Call | CallRecording, index)=>(
             <MeetingCard
+            // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               key={meeting.id || `meeting-${index}`}
               icon={
                 type === 'ended'
@@ -85,12 +84,16 @@ const CallList = ({type}: {type: 'ended' | 'upcoming' | 'recordings'}) => {
                     ? '/icons/upcoming.svg'
                     : '/icons/recordings.svg'
               }
+              // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               title={(meeting as Call).state?.custom.desc.substring(0,26) || meeting.filename.substring(0,20) || 'No description'}
+              // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               date={meeting.state?.startsAt.toLocaleString() || meeting.start_time.toLocaleString()}
               isPreviousMeeting={ type === 'ended' }
               buttonIcon1={ type == 'recordings' ? '/icons/play.svg' : undefined}
               buttonText={ type == 'recordings' ? 'Play' : 'Start'}
+              // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               handleClick={ type === 'recordings' ? ()=> router.push(`${meeting.url}`) : ()=> router.push(`/meeting/${meeting.id}`)}
+              // @ts-expect-error: Reason why you're ignoring this error (optional comment)
               link={ type === 'recordings' ? meeting.url : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meeting.id}`}
             />
           ))
