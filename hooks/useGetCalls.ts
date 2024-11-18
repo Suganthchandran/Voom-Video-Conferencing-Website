@@ -20,12 +20,13 @@ export const useGetCalls = () => {
                     filter_conditions: {
                         starts_at: { $exists: true },
                         $or: [
-                            { create_by_user_id : user.id },
+                            { created_by_user_id : user.id },
                             { members: { $in: [user.id] }},
                         ]
                     }
                 });
                 setCalls(calls);
+                console.log('Fetched calls:', calls);
             }
             catch(error) {
                 console.log(error)
@@ -38,8 +39,7 @@ export const useGetCalls = () => {
     },[client, user?.id]);
 
     const now = new Date();
-
-
+    console.log('Current time (now):', now);
 
     const endedCalls = calls.filter(({ state: { startsAt, endedAt}}: Call) => {
         return (startsAt && new Date(startsAt) < now || !!endedAt)
